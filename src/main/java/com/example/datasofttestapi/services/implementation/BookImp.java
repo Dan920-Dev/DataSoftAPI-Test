@@ -18,4 +18,10 @@ public class BookImp implements BookService {
         return books;
     }
 
+    @Override
+    public Book findById(Long id) {
+        Book book = bookRp.findById(id).orElse(null);
+        return book;
+    }
+
 }

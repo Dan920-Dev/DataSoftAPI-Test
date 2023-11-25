@@ -6,4 +6,6 @@ import java.util.List;
 
 public interface BookService {
     List<Book> getAllBooksByGenre(Long id);
+
+    Book findById(Long id);
 }

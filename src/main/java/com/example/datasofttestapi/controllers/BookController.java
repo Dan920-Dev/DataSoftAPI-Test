@@ -26,7 +26,7 @@ public class BookController {
 
             List<BookDTO> response = products.stream()
                     .map(book -> {
-                        String genreName = (book.getGen_id() != null) ? book.getGen_id().getName() : "N/A";
+
                         String userName = (book.getUser_id() != null) ? book.getUser_id().getUsername() : "N/A";
 
                         return new BookDTO(
@@ -36,7 +36,7 @@ public class BookController {
                                 book.getPrice(),
                                 book.getState(),
                                 book.getImage(),
-                                genreName,
+                                book.getGen_id().getName(),
                                 userName);
                     })
                     .toList();
@@ -45,6 +45,31 @@ public class BookController {
         }catch (Exception e){
             e.printStackTrace();
             return new ResponseEntity<>("Error Data Processing", HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @GetMapping("book/detail/{id}")
+    public ResponseEntity<?> getBookDetail(@PathVariable Long id){
+        try{
+            Book book = bookSv.findById(id);
+
+            String userName = (book.getUser_id() != null) ? book.getUser_id().getUsername() : "N/A";
+
+            BookDTO response = new BookDTO(
+                    book.getId(),
+                    book.getName(),
+                    book.getSummary(),
+                    book.getPrice(),
+                    book.getState(),
+                    book.getImage(),
+                    book.getGen_id().getName(),
+                    userName);
+
+            return new ResponseEntity<>(response, HttpStatus.ACCEPTED);
+        }catch (Exception e){
+
+            e.printStackTrace();
+            return new ResponseEntity<>("Error processing product data", HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
