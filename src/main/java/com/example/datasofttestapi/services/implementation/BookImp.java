@@ -24,4 +24,9 @@ public class BookImp implements BookService {
         return book;
     }
 
+    @Override
+    public void save(Book book) {
+        bookRp.save(book);
+    }
+
 }

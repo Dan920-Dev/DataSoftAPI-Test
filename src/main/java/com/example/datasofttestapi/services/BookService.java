@@ -8,4 +8,6 @@ public interface BookService {
     List<Book> getAllBooksByGenre(Long id);
 
     Book findById(Long id);
+
+    void save(Book book);
 }
