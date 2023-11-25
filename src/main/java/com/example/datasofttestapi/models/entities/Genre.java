@@ -11,10 +11,11 @@ import lombok.NoArgsConstructor;
 @Table(name = "generes")
 public class Genre {
     @Id
+    @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(length = 30, nullable = false)
+    @Column(name = "name")
     private String name;
 
     public Genre(Long id, String name) {

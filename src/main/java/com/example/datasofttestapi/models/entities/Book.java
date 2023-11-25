@@ -10,22 +10,23 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class Book {
     @Id
+    @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(length = 50, nullable = false)
+    @Column(name = "name")
     private String name;
 
-    @Column(length = 500)
+    @Column(name = "summary")
     private String summary;
 
-    @Column(precision = 6, scale = 2)
+    @Column(name = "price")
     private Double price;
 
-    @Column(length = 3)
+    @Column(name = "state")
     private String state;
 
-    @Column(length = 500)
+    @Column(name = "image")
     private String image;
 
     @ManyToOne

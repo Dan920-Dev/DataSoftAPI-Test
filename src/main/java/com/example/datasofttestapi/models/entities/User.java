@@ -11,19 +11,20 @@ import lombok.NoArgsConstructor;
 public class User {
 
     @Id
+    @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "full_name", length = 30, nullable = false)
+    @Column(name = "full_name")
     private String full_name;
 
-    @Column(length = 20, nullable = false)
+    @Column(name = "username")
     private String username;
 
-    @Column(length = 20, nullable = false)
+    @Column(name = "passwd")
     private String passwd;
 
-    @Column(length = 3)
+    @Column(name = "state")
     private String state;
 
     public User(Long id, String full_name, String username, String passwd, String state) {
