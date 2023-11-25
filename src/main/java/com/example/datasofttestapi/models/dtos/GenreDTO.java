@@ -7,20 +7,7 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class BookDTO {
+public class GenreDTO {
     private Long id;
-
     private String name;
-
-    private String summary;
-
-    private Double price;
-
-    private String state;
-
-    private String image;
-
-    private String gen_name;
-
-    private String user_name;
 }
