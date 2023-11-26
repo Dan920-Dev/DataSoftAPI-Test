@@ -15,4 +15,8 @@ public class UserImp implements UserService {
     public User findById(Long idUser) {
         return userRp.findById(idUser).orElse(null);
     }
+
+    public User findByUsername(String username){
+        return userRp.findByUsername(username);
+    }
 }
