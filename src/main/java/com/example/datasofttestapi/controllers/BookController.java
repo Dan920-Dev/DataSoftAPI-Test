@@ -3,6 +3,8 @@ package com.example.datasofttestapi.controllers;
 
 import com.example.datasofttestapi.models.dtos.BookDTO;
 import com.example.datasofttestapi.models.dtos.BookUpdateDTO;
+import com.example.datasofttestapi.models.dtos.FindNameDTO;
+import com.example.datasofttestapi.models.dtos.RangeDTO;
 import com.example.datasofttestapi.models.entities.Book;
 import com.example.datasofttestapi.models.entities.User;
 import com.example.datasofttestapi.repositories.BookRepository;
@@ -13,6 +15,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 @CrossOrigin("*")
@@ -28,15 +31,44 @@ public class BookController {
     @Autowired
     UserService userSv;
 
+    @GetMapping("book/all")
+    public ResponseEntity<?> getAllBooks(){
+        try{
+            List<Book> books = bookSv.getAll();
+
+            List<BookDTO> response = books.stream()
+                    .map(book -> {
+
+                        String userName = (book.getUser_id() != null) ? book.getUser_id().getFull_name() : "N/A";
+
+                        return new BookDTO(
+                                book.getId(),
+                                book.getName(),
+                                book.getSummary(),
+                                book.getPrice(),
+                                book.getState(),
+                                book.getImage(),
+                                book.getGen_id().getName(),
+                                userName);
+                    })
+                    .toList();
+            return new ResponseEntity<>(response, HttpStatus.ACCEPTED);
+        }catch (Exception e){
+
+            e.printStackTrace();
+            return new ResponseEntity<>("Error processing products data", HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
     @GetMapping("book/byGenre/{id}")
     public ResponseEntity<?> getBooksByGenre(@PathVariable Long id){
         try{
-            List<Book> products = bookSv.getAllBooksByGenre(id);
+            List<Book> books = bookSv.getAllBooksByGenre(id);
 
-            List<BookDTO> response = products.stream()
+            List<BookDTO> response = books.stream()
                     .map(book -> {
 
-                        String userName = (book.getUser_id() != null) ? book.getUser_id().getUsername() : "N/A";
+                        String userName = (book.getUser_id() != null) ? book.getUser_id().getFull_name() : "N/A";
 
                         return new BookDTO(
                                 book.getId(),
@@ -62,7 +94,7 @@ public class BookController {
         try{
             Book book = bookSv.findById(id);
 
-            String userName = (book.getUser_id() != null) ? book.getUser_id().getUsername() : "N/A";
+            String userName = (book.getUser_id() != null) ? book.getUser_id().getFull_name() : "N/A";
 
             BookDTO response = new BookDTO(
                     book.getId(),
@@ -109,5 +141,34 @@ public class BookController {
         }
     }
 
+
+    @GetMapping("book/byrange")
+    public ResponseEntity<?> getBooksByGenre(@RequestBody RangeDTO range){
+        try{
+            List<Book> books = bookSv.getAllByRange(range.getMin(), range.getMax());
+
+            List<BookDTO> response = books.stream()
+                    .map(book -> {
+
+                        String userName = (book.getUser_id() != null) ? book.getUser_id().getFull_name() : "N/A";
+
+                        return new BookDTO(
+                                book.getId(),
+                                book.getName(),
+                                book.getSummary(),
+                                book.getPrice(),
+                                book.getState(),
+                                book.getImage(),
+                                book.getGen_id().getName(),
+                                userName);
+                    })
+                    .toList();
+
+            return new ResponseEntity<>(response, HttpStatus.ACCEPTED);
+        }catch (Exception e){
+            e.printStackTrace();
+            return new ResponseEntity<>("Error Data Processing", HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
 
 }
